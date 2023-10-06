@@ -218,31 +218,32 @@ function isValidURL() {
 }
 
 // Main execution
-window.onload = function() {
-(function() {
+document.addEventListener("DOMContentLoaded", function() {
   if (isValidURL()){
-  dniStoreSource()
-  dniStoreIP()
-  var urlData = decodeURI(window.location.href);
-  var url = urlData.split('?')[0];
-  var params = dniExtractParameters();
-  var cookies = dniParseCookies();
-  var browserData = dniParseData();
-  
-  var jsonData = {
-    url: url,
-    params: params,
-    cookies: cookies,
-    browserData: browserData
-  };
-
-   if (!isBot()){
-  dniSendAnalyticsData(jsonData, function(error, phoneNumber) {
-    if (error) {
-      console.error('Error:', error);
-      return;
-    }
-    dniUpdatePhoneNumbers(phoneNumber);
     dniStoreSource();
-  });}}
-})();}
+    dniStoreIP();
+    var urlData = decodeURI(window.location.href);
+    var url = urlData.split('?')[0];
+    var params = dniExtractParameters();
+    var cookies = dniParseCookies();
+    var browserData = dniParseData();
+    
+    var jsonData = {
+      url: url,
+      params: params,
+      cookies: cookies,
+      browserData: browserData
+    };
+
+    if (!isBot()){
+      dniSendAnalyticsData(jsonData, function(error, phoneNumber) {
+        if (error) {
+          console.error('Error:', error);
+          return;
+        }
+        dniUpdatePhoneNumbers(phoneNumber);
+        dniStoreSource();
+      });
+    }
+  }
+});
