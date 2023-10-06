@@ -146,6 +146,14 @@ function dniParseCookies() {
 
   return cookieData;
 }
+
+
+
+
+
+
+
+
 function dniStoreSource() {
   if (typeof(Storage) !== "undefined") {
       if (!localStorage.getItem("origionalref")) {
@@ -155,7 +163,47 @@ function dniStoreSource() {
       }
   } else {
   }
-}
+
+  //Set Cookies 
+  var currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 10);
+  var expiresDate = "expires=" + currentDate.toUTCString();
+    var cookies = document.cookie.split("; ");
+    var found = false;
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].startsWith("origionalref")) {
+            found = true;
+            break;}}
+
+    if (!found) {
+        var firstReferrer = encodeURI(document.referrer);
+        document.cookie = "origionalref=" + firstReferrer + ";"+ expiresDate +"; SameSite=None; Secure";
+    }}
+
+function dniStoreIP() {
+  if (typeof(Storage) !== "undefined") {
+      if (!localStorage.getItem("ip")) {
+          localStorage.setItem("ip", ip);
+      } else {
+      }
+  } else {
+  }
+
+
+  //Store ip in Cookies 
+  var currentDate = new Date();
+currentDate.setDate(currentDate.getDate() + 10);
+var expiresDate = "expires=" + currentDate.toUTCString();
+  var cookies = document.cookie.split("; ");
+    var found = false;
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].startsWith("ip")) {
+            found = true;
+            break;}}
+
+    if (!found) {
+        document.cookie = "ip=" + ip + "; "+ expiresDate +"; SameSite=None; Secure";
+    }}
 
 //Check if Bot Traffic 
 function isBot() {
@@ -174,6 +222,7 @@ window.onload = function() {
 (function() {
   if (isValidURL()){
   dniStoreSource()
+  dniStoreIP()
   var urlData = decodeURI(window.location.href);
   var url = urlData.split('?')[0];
   var params = dniExtractParameters();
