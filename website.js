@@ -226,7 +226,7 @@ function isValidURL() {
 document.addEventListener("DOMContentLoaded", function() {
   if (isValidURL()){
     dniStoreSource();
-    dniStoreIP(ip);
+    //dniStoreIP(ip);
     var urlData = decodeURI(window.location.href);
     var url = urlData.split('?')[0];
     var params = dniExtractParameters();
