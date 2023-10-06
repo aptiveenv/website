@@ -180,30 +180,35 @@ function dniStoreSource() {
         document.cookie = "origionalref=" + firstReferrer + ";"+ expiresDate +"; SameSite=None; Secure";
     }}
 
-function dniStoreIP() {
-  if (typeof(Storage) !== "undefined") {
-      if (!localStorage.getItem("ip")) {
-          localStorage.setItem("ip", ip);
-      } else {
+    function dniStoreIP(ip) {
+      if (!ip) {
+        console.error("IP is not provided");
+        return;
       }
-  } else {
-  }
-
-
-  //Store ip in Cookies 
-  var currentDate = new Date();
-currentDate.setDate(currentDate.getDate() + 10);
-var expiresDate = "expires=" + currentDate.toUTCString();
-  var cookies = document.cookie.split("; ");
-    var found = false;
-    for (var i = 0; i < cookies.length; i++) {
+    
+      if (typeof(Storage) !== "undefined") {
+        if (!localStorage.getItem("ip")) {
+          localStorage.setItem("ip", ip);
+        }
+      }
+    
+      // Store ip in Cookies 
+      var currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 10);
+      var expiresDate = "expires=" + currentDate.toUTCString();
+      var cookies = document.cookie.split("; ");
+      var found = false;
+      for (var i = 0; i < cookies.length; i++) {
         if (cookies[i].startsWith("ip")) {
-            found = true;
-            break;}}
-
-    if (!found) {
-        document.cookie = "ip=" + ip + "; "+ expiresDate +"; SameSite=None; Secure";
-    }}
+          found = true;
+          break;
+        }
+      }
+    
+      if (!found) {
+        document.cookie = "ip=" + ip + "; " + expiresDate + "; SameSite=None; Secure";
+      }
+    }
 
 //Check if Bot Traffic 
 function isBot() {
@@ -221,7 +226,7 @@ function isValidURL() {
 document.addEventListener("DOMContentLoaded", function() {
   if (isValidURL()){
     dniStoreSource();
-    dniStoreIP();
+    dniStoreIP(ip);
     var urlData = decodeURI(window.location.href);
     var url = urlData.split('?')[0];
     var params = dniExtractParameters();
