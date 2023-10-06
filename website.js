@@ -236,7 +236,6 @@ window.onload = function() {
     browserData: browserData
   };
 
-  console.log(jsonData);
    if (!isBot()){
   dniSendAnalyticsData(jsonData, function(error, phoneNumber) {
     if (error) {
